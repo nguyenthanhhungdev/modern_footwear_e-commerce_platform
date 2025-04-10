@@ -1,15 +1,17 @@
-import { ShoppingBag, Search, Menu, X } from "lucide-react"
+import { ShoppingBag, Search, Menu } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 
 export function Navbar() {
+  const navigate = useNavigate()
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="sm" className="md:hidden">
                 <Menu className="h-5 w-5" />
               </Button>
             </DropdownMenu.Trigger>
@@ -47,10 +49,10 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="sm">
             <Search className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/cart')}>
             <ShoppingBag className="h-5 w-5" />
           </Button>
         </div>
