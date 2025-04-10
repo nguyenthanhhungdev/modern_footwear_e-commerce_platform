@@ -1,3 +1,11 @@
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from "@radix-ui/react-navigation-menu"
+import { cn } from "@/lib/utils"
+
 import { ShoppingBag, Search, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
@@ -39,13 +47,35 @@ export function Navbar() {
           <a href="/" className="text-xl font-bold">
             SNKR<span className="text-primary">HOUSE</span>
           </a>
-          <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
-            <a href="#" className="transition-colors hover:text-primary">New Releases</a>
-            <a href="#" className="transition-colors hover:text-primary">Men</a>
-            <a href="#" className="transition-colors hover:text-primary">Women</a>
-            <a href="#" className="transition-colors hover:text-primary">Kids</a>
-            <a href="#" className="transition-colors hover:text-primary">Sale</a>
-          </nav>
+          <NavigationMenu className="hidden items-center space-x-6 text-sm font-medium md:flex">
+            <NavigationMenuList className="flex space-x-6">
+              <NavigationMenuItem>
+                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
+                  New Releases
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
+                  Men
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
+                  Women
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
+                  Kids
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
+                  Sale
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
 
         <div className="flex items-center gap-4">
