@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
-
+import { DropdownContent } from "./ui/dropdown-content"
 export function Navbar() {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,6 +20,13 @@ export function Navbar() {
   const contentRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<MutationObserver | null>(null)
 
+  const dropdowncontent = [
+    "Sneakers",
+    "Running Shoes",
+    "Basketball Shoes",
+    "Casual Shoes",
+    "Sandals & Slides"
+  ]
   // Handle hover with delay
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -139,7 +146,7 @@ export function Navbar() {
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
-              <DropdownMenu.Content 
+              <DropdownMenu.Content
                 className="min-w-[200px] bg-white rounded-md p-1 shadow-lg will-change-[opacity,transform]"
                 sideOffset={5}
                 onPointerDownOutside={(e) => e.preventDefault()}
@@ -166,7 +173,7 @@ export function Navbar() {
           </DropdownMenu.Root>
 
           <a href="/" className="text-xl font-bold">
-            SNKR<span className="text-primary">HOUSE</span>
+            THESHOE<span className="text-primary">HOUSE</span>
           </a>
           <NavigationMenu className="hidden items-center space-x-6 text-sm font-medium md:flex">
             <NavigationMenuList className="flex space-x-6">
@@ -175,7 +182,7 @@ export function Navbar() {
                   New Releases
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              
+
               {/* Men Dropdown */}
               <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                 <DropdownMenu.Trigger asChild>
@@ -189,7 +196,7 @@ export function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={isMenuOpen}
                   >
-                    <NavigationMenuLink 
+                    <NavigationMenuLink
                       className={cn(
                         "transition-colors hover:text-primary",
                         "data-[state=open]:text-primary"
@@ -200,34 +207,14 @@ export function Navbar() {
                   </NavigationMenuItem>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Portal>
-                  <DropdownMenu.Content
+                  <DropdownContent
+                    items={dropdowncontent}
                     ref={contentRef}
-                    className="min-w-[200px] bg-white rounded-md p-2 shadow-lg"
                     sideOffset={10}
                     align="start"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    onPointerDownOutside={(e) => e.preventDefault()}
-                    onInteractOutside={(e) => e.preventDefault()}
-                    style={{ pointerEvents: 'auto' }}
-                  >
-                    <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                      <a href="#" className="w-full">Sneakers</a>
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                      <a href="#" className="w-full">Running Shoes</a>
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                      <a href="#" className="w-full">Basketball Shoes</a>
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                      <a href="#" className="w-full">Casual Shoes</a>
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                      <a href="#" className="w-full">Sandals & Slides</a>
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Arrow className="fill-white" />
-                  </DropdownMenu.Content>
+                  />
                 </DropdownMenu.Portal>
               </DropdownMenu.Root>
 
