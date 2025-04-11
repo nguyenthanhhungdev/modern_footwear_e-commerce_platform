@@ -9,8 +9,10 @@ import { ShoppingBag, Search, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import * as Avatar from "@radix-ui/react-avatar"
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
 import { DropdownContent } from "./ui/dropdown-content"
+
 export function Navbar() {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -190,6 +192,7 @@ export function Navbar() {
                     ref={triggerRef}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    onClick={() => setIsMenuOpen(true)}
                     onFocus={() => setIsMenuOpen(true)}
                     onBlur={() => setIsMenuOpen(false)}
                     onKeyDown={handleKeyDown}
@@ -244,6 +247,33 @@ export function Navbar() {
           <Button variant="ghost" size="sm" onClick={() => navigate('/cart')}>
             <ShoppingBag className="h-5 w-5" />
           </Button>
+          
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <button className="rounded-full outline-none">
+                <Avatar.Root className="inline-flex h-9 w-9 select-none items-center justify-center overflow-hidden rounded-full bg-blackA3 align-middle">
+                  <Avatar.Image
+                    className="h-full w-full rounded-[inherit] object-cover"
+                    src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
+                    alt="User Avatar"
+                  />
+                  <Avatar.Fallback 
+                    className="flex h-full w-full items-center justify-center bg-white text-sm font-medium text-violet11"
+                    delayMs={600}
+                  >
+                    US
+                  </Avatar.Fallback>
+                </Avatar.Root>
+              </button>
+            </DropdownMenu.Trigger>
+            
+            <DropdownMenu.Portal>
+              <DropdownContent
+                items={["Profile", "Settings", "Logout"]}
+                sideOffset={5}
+              />
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
         </div>
       </div>
     </header>
