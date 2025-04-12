@@ -1,8 +1,8 @@
 // src/components/Home.js
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { HeroBanner } from './HeroBanner';
-import { FeaturedProducts } from './FeaturedProducts';
+import { HeroBanner } from './home/HeroBanner';
+import { FeaturedProducts } from './home/FeaturedProduct/FeaturedProducts';
 
 /**
  * Home component - Main landing page that composes HeroBanner and FeaturedProducts

@@ -1,6 +1,5 @@
 import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import * as Tooltip from "@radix-ui/react-tooltip"
 import * as AspectRatio from "@radix-ui/react-aspect-ratio"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@radix-ui/react-hover-card'
 import { Skeleton } from '@/components/SkeletonLoader'
@@ -34,23 +33,44 @@ export function ProductCard(props: ProductCardProps) {
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-lg border bg-card">
+    <div className="group relative overflow-hidden rounded-lg border">
       <HoverCard>
         <div className="relative">
-          <AspectRatio.Root ratio={4/3}>
+          <AspectRatio.Root ratio={1}>
             <div className="relative h-full w-full overflow-hidden">
               {isLoading && (
                 <Skeleton className="absolute inset-0 h-full w-full" />
               )}
               <HoverCardTrigger asChild>
-                <img
-                  src={imageUrl}
-                  alt={name}
-                  className={`h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${
-                    isLoading ? 'opacity-0' : 'opacity-100'
-                  }`}
-                  onLoad={handleImageLoad}
-                />
+                <div className="relative h-full">
+                  <img
+                    src={imageUrl}
+                    alt={name}
+                    className={`h-full w-full object-cover transition-all duration-300 ${
+                      isLoading ? 'opacity-0' : 'opacity-100'
+                    }`}
+                    style={{
+                      objectPosition: 'center top',
+                    }}
+                    onLoad={handleImageLoad}
+                  />
+                  
+                  {/* Product info overlay that appears on hover */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-white p-3 transform translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-sm">{brand}</h3>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm">{rating}</span>
+                      </div>
+                    </div>
+                    <h2 className="mt-1 text-base font-semibold line-clamp-1">{name}</h2>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="font-bold">${price.toFixed(2)}</span>
+                      <Button size="sm" variant="outline">Add to Cart</Button>
+                    </div>
+                  </div>
+                </div>
               </HoverCardTrigger>
             </div>
           </AspectRatio.Root>
@@ -71,11 +91,7 @@ export function ProductCard(props: ProductCardProps) {
               />
             </div>
             <div className="space-y-2">
-              {isLoading ? (
-    <Skeleton className="h-4 w-[80px]" />
-  ) : (
-    <h3 className="font-medium text-sm">{brand}</h3>
-  )}
+              <h3 className="font-medium text-sm">{brand}</h3>
               <h2 className="text-lg font-semibold">{name}</h2>
               <p className="text-muted-foreground">${price.toFixed(2)}</p>
               <Button size="sm" className="w-full mt-2">Quick View</Button>
@@ -83,51 +99,6 @@ export function ProductCard(props: ProductCardProps) {
           </div>
         </HoverCardContent>
       </HoverCard>
-
-      <div className="p-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-medium text-sm">{brand}</h3>
-          <Tooltip.Provider>
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-        {isLoading ? (
-          <Skeleton className="h-4 w-[50px]" />
-        ) : (
-          <div className="flex items-center gap-1">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm">{rating}</span>
-          </div>
-        )}
-              </Tooltip.Trigger>
-              <Tooltip.Portal>
-                <Tooltip.Content
-                  className="bg-foreground text-background px-2 py-1 rounded text-xs"
-                  sideOffset={5}
-                >
-                  Customer Rating: {rating}/5
-                  <Tooltip.Arrow className="fill-foreground" />
-                </Tooltip.Content>
-              </Tooltip.Portal>
-            </Tooltip.Root>
-          </Tooltip.Provider>
-        </div>
-        {isLoading ? (
-        <Skeleton className="h-6 w-full mt-1" />
-      ) : (
-        <h2 className="mt-1 text-lg font-semibold line-clamp-1">{name}</h2>
-      )}
-        {isLoading ? (
-          <div className="mt-4 flex items-center justify-between gap-2">
-            <Skeleton className="h-4 w-[60px]" />
-            <Skeleton className="h-9 w-[100px]" />
-          </div>
-        ) : (
-          <div className="mt-4 flex items-center justify-between">
-            <span className="font-bold">${price.toFixed(2)}</span>
-            <Button size="sm" variant="outline">Add to Cart</Button>
-          </div>
-        )}
-      </div>
     </div>
   )
 }
