@@ -10,7 +10,8 @@
     "strict": true,
     "paths": {
       "@/*": ["src/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@radix-ui/*": ["./node_modules/@radix-ui/*"]
     },
     "types": ["vite/client"],
     "moduleResolution": "bundler",
@@ -21,5 +22,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src", "vite.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": []
 }

@@ -10,59 +10,31 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import * as Avatar from "@radix-ui/react-avatar"
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
+import { useState, useRef, useEffect, useLayoutEffect } from "react"
 import { DropdownContent } from "./ui/dropdown-content"
+import { NavDropdown } from "./ui/nav-dropdown"
+import { SkeletonNavbar } from './SkeletonLoader'
 
-export function Navbar() {
+export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
   const navigate = useNavigate()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isHovered, setIsHovered] = useState(false)
+  const [isMenMenuOpen, setIsMenMenuOpen] = useState(false) // Fix unused variable warning
+  const [isWomenMenuOpen, setIsWomenMenuOpen] = useState(false) // Fix unused variable warning
+  const [isKidsMenuOpen, setIsKidsMenuOpen] = useState(false) // Fix unused variable warning
+  const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false) // Fix unused variable warning
   const timeoutRef = useRef<number | null>(null)
   const triggerRef = useRef<HTMLLIElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<MutationObserver | null>(null)
-
-  const dropdowncontent = [
-    "Sneakers",
-    "Running Shoes",
-    "Basketball Shoes",
-    "Casual Shoes",
-    "Sandals & Slides"
-  ]
-  // Handle hover with delay
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    setIsHovered(true)
-    setIsMenuOpen(true)
-  }
-
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => {
-      if (!contentRef.current?.matches(':hover') && !triggerRef.current?.matches(':hover')) {
-        setIsHovered(false)
-        setIsMenuOpen(false)
-      }
-    }, 200)
-  }
-
+  
   // Clear timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [])
-
-  // Keyboard navigation support
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      setIsMenuOpen(!isMenuOpen)
-    } else if (e.key === 'Escape') {
-      setIsMenuOpen(false)
-    }
-  }
-
+  
   // Monitor and fix body style changes
   useLayoutEffect(() => {
     // Observer for body style changes
@@ -136,11 +108,107 @@ export function Navbar() {
       documentObserver.disconnect();
     };
   }, []);
+  
+  if (isLoading) {
+    return <SkeletonNavbar />
+  }
+
+  const dropdownmencontent = [
+    "Sneakers",
+    "Running Shoes",
+    "Basketball Shoes",
+    "Casual Shoes",
+    "Sandals & Slides",
+    "Football"
+  ]
+  const dropdownsalecontent = [
+    "Sneakers",
+    "Running Shoes",
+    "Basketball Shoes",
+    "Casual Shoes",
+    "Sandals & Slides",
+    "Football"
+  ] 
+  const dropdownwomencontent = [
+    "Sneakers",
+    "Running Shoes",
+    "Basketball Shoes",
+    "Casual Shoes",
+    "Sandals & Slides",
+  ]
+  const dropdownkidcontent = [
+    "Sneakers",
+    "Casual Shoes",
+    "Sandals",
+  ]
+
+
+  // Handle hover with delay
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleMouseEnter = (menuType: string) => (_event: React.MouseEvent<HTMLLIElement>) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setIsHovered(true)
+    
+    // Close other menus
+    switch(menuType) {
+      case 'men':
+        setIsWomenMenuOpen(false);
+        setIsKidsMenuOpen(false);
+        setIsSaleMenuOpen(false);
+        setIsMenMenuOpen(true);
+        break;
+      case 'women':
+        setIsMenMenuOpen(false);
+        setIsKidsMenuOpen(false);
+        setIsSaleMenuOpen(false);
+        setIsWomenMenuOpen(true);
+        break;
+      case 'kids':
+        setIsMenMenuOpen(false);
+        setIsWomenMenuOpen(false);
+        setIsSaleMenuOpen(false);
+        setIsKidsMenuOpen(true);
+        break;
+      case 'sale':
+        setIsMenMenuOpen(false);
+        setIsWomenMenuOpen(false);
+        setIsKidsMenuOpen(false);
+        setIsSaleMenuOpen(true);
+        break;
+    }
+  }
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleMouseLeave = (menuType: string) => (_event: React.MouseEvent<HTMLLIElement>) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      if (!contentRef.current?.matches(':hover') && !triggerRef.current?.matches(':hover')) {
+        setIsHovered(false)
+        switch(menuType) {
+          case 'men': setIsMenMenuOpen(false); break
+          case 'women': setIsWomenMenuOpen(false); break
+          case 'kids': setIsKidsMenuOpen(false); break
+          case 'sale': setIsSaleMenuOpen(false); break
+        }
+      }
+    }, 200)
+  }
+  // Keyboard navigation support
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setIsMenMenuOpen(!isMenMenuOpen)
+    } else if (e.key === 'Escape') {
+      setIsMenMenuOpen(false)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
+
+          {/* Mobile */}
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <Button variant="ghost" size="sm" className="md:hidden">
@@ -173,6 +241,7 @@ export function Navbar() {
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
+          {/* ============= */}
 
           <a href="/" className="text-xl font-bold">
             THESHOE<span className="text-primary">HOUSE</span>
@@ -186,56 +255,54 @@ export function Navbar() {
               </NavigationMenuItem>
 
               {/* Men Dropdown */}
-              <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-                <DropdownMenu.Trigger asChild>
-                  <NavigationMenuItem
-                    ref={triggerRef}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => setIsMenuOpen(true)}
-                    onFocus={() => setIsMenuOpen(true)}
-                    onBlur={() => setIsMenuOpen(false)}
-                    onKeyDown={handleKeyDown}
-                    aria-haspopup="true"
-                    aria-expanded={isMenuOpen}
-                  >
-                    <NavigationMenuLink
-                      className={cn(
-                        "transition-colors hover:text-primary",
-                        "data-[state=open]:text-primary"
-                      )}
-                    >
-                      Men
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Portal>
-                  <DropdownContent
-                    items={dropdowncontent}
-                    ref={contentRef}
-                    sideOffset={10}
-                    align="start"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  />
-                </DropdownMenu.Portal>
-              </DropdownMenu.Root>
+              <NavDropdown
+                label="Men"
+                items={dropdownmencontent}
+                isOpen={isMenMenuOpen}
+                setIsOpen={setIsMenMenuOpen}
+                menuType="men"
+                handleMouseEnter={handleMouseEnter}
+                handleMouseLeave={handleMouseLeave}
+                handleKeyDown={handleKeyDown}
+                triggerRef={triggerRef}
+                contentRef={contentRef}
+              />
 
-              <NavigationMenuItem>
-                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
-                  Women
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
-                  Kids
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink href="#" className={cn("transition-colors hover:text-primary")}>
-                  Sale
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {/* Women Dropdown */}
+              <NavDropdown
+                label="Women"
+                items={dropdownwomencontent}
+                isOpen={isWomenMenuOpen}
+                setIsOpen={setIsWomenMenuOpen}
+                menuType="women"
+                handleMouseEnter={handleMouseEnter}
+                handleMouseLeave={handleMouseLeave}
+                handleKeyDown={handleKeyDown}
+              />
+
+              {/* Kids Dropdown */}
+              <NavDropdown
+                label="Kids"
+                items={dropdownkidcontent}
+                isOpen={isKidsMenuOpen}
+                setIsOpen={setIsKidsMenuOpen}
+                menuType="kids"
+                handleMouseEnter={handleMouseEnter}
+                handleMouseLeave={handleMouseLeave}
+                handleKeyDown={handleKeyDown}
+              />
+
+              {/* Sale Dropdown */}
+              <NavDropdown
+                label="Sale"
+                items={dropdownsalecontent}
+                isOpen={isSaleMenuOpen}
+                setIsOpen={setIsSaleMenuOpen}
+                menuType="sale"
+                handleMouseEnter={handleMouseEnter}
+                handleMouseLeave={handleMouseLeave}
+                handleKeyDown={handleKeyDown}
+              />
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -250,7 +317,7 @@ export function Navbar() {
           
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <button className="rounded-full outline-none">
+              <button type="button" className="rounded-full outline-none">
                 <Avatar.Root className="inline-flex h-9 w-9 select-none items-center justify-center overflow-hidden rounded-full bg-blackA3 align-middle">
                   <Avatar.Image
                     className="h-full w-full rounded-[inherit] object-cover"
