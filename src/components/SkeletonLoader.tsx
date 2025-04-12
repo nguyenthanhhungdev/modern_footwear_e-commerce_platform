@@ -107,6 +107,54 @@ export function SkeletonCard({
   );
 }
 
+export function SkeletonCart() {
+  return (
+    <div className="space-y-4">
+      {/* Header Skeleton */}
+      <div className="flex items-center justify-between pb-4 border-b">
+        <SkeletonText className="h-6 w-24" />
+        <Skeleton className="h-6 w-20" />
+      </div>
+
+      {/* Items Skeleton */}
+      <div className="space-y-4 py-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4">
+            <Skeleton className="h-16 w-16 rounded" />
+            <div className="flex-1 space-y-2">
+              <SkeletonText className="h-4 w-3/4" />
+              <SkeletonText className="h-4 w-1/2" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-8 w-20" />
+                <Skeleton className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Summary Skeleton */}
+      <div className="space-y-2 pt-4 border-t">
+        <div className="flex justify-between">
+          <SkeletonText className="h-4 w-1/2" />
+          <SkeletonText className="h-4 w-1/4" />
+        </div>
+        <div className="flex justify-between">
+          <SkeletonText className="h-4 w-1/2" />
+          <SkeletonText className="h-4 w-1/4" />
+        </div>
+        <div className="flex justify-between font-bold pt-2">
+          <SkeletonText className="h-5 w-1/2" />
+          <SkeletonText className="h-5 w-1/4" />
+        </div>
+      </div>
+
+      {/* Checkout Button Skeleton */}
+      <SkeletonButton className="w-full h-10 mt-4" />
+    </div>
+  );
+}
+
 export function SkeletonAvatar({
   className,
   ...props

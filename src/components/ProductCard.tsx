@@ -71,7 +71,11 @@ export function ProductCard(props: ProductCardProps) {
               />
             </div>
             <div className="space-y-2">
-              <h3 className="font-medium text-sm">{brand}</h3>
+              {isLoading ? (
+    <Skeleton className="h-4 w-[80px]" />
+  ) : (
+    <h3 className="font-medium text-sm">{brand}</h3>
+  )}
               <h2 className="text-lg font-semibold">{name}</h2>
               <p className="text-muted-foreground">${price.toFixed(2)}</p>
               <Button size="sm" className="w-full mt-2">Quick View</Button>
@@ -86,10 +90,14 @@ export function ProductCard(props: ProductCardProps) {
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm">{rating}</span>
-                </div>
+        {isLoading ? (
+          <Skeleton className="h-4 w-[50px]" />
+        ) : (
+          <div className="flex items-center gap-1">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <span className="text-sm">{rating}</span>
+          </div>
+        )}
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content
@@ -103,11 +111,22 @@ export function ProductCard(props: ProductCardProps) {
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
+        {isLoading ? (
+        <Skeleton className="h-6 w-full mt-1" />
+      ) : (
         <h2 className="mt-1 text-lg font-semibold line-clamp-1">{name}</h2>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="font-bold">${price.toFixed(2)}</span>
-          <Button size="sm" variant="outline">Add to Cart</Button>
-        </div>
+      )}
+        {isLoading ? (
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <Skeleton className="h-4 w-[60px]" />
+            <Skeleton className="h-9 w-[100px]" />
+          </div>
+        ) : (
+          <div className="mt-4 flex items-center justify-between">
+            <span className="font-bold">${price.toFixed(2)}</span>
+            <Button size="sm" variant="outline">Add to Cart</Button>
+          </div>
+        )}
       </div>
     </div>
   )
