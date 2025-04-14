@@ -24,9 +24,8 @@ export function ProductCard(props: ProductCardProps) {
   
   // Extract properties based on prop type
   const name = type === 'full' ? props.product.name : props.name;
-  const brand = type === 'full' ? props.product.brand : props.brand;
   const price = type === 'full' ? props.product.price : props.price;
-  const imageUrl = type === 'full' ? props.product.imageUrl : props.imageUrl;
+  const imageUrl = type === 'full' ? props.product.image : props.imageUrl;
   const rating = type === 'full' ? props.product.rating : props.rating;
   
   const handleImageLoad = () => {
@@ -74,7 +73,7 @@ export function ProductCard(props: ProductCardProps) {
               {isLoading ? (
     <Skeleton className="h-4 w-[80px]" />
   ) : (
-    <h3 className="font-medium text-sm">{brand}</h3>
+    <h3 className="font-medium text-sm">Nike</h3>
   )}
               <h2 className="text-lg font-semibold">{name}</h2>
               <p className="text-muted-foreground">${price.toFixed(2)}</p>
@@ -86,7 +85,6 @@ export function ProductCard(props: ProductCardProps) {
 
       <div className="p-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-medium text-sm">{brand}</h3>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>

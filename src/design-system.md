@@ -77,4 +77,5 @@
 - [ ] Switch
 - [ ] Tabs
 - [ ] Tooltip
+- [x] Select
 

@@ -1,20 +1,18 @@
 export interface Product {
   id: string;
   name: string;
-  brand: string;
   price: number;
-  imageUrl: string;
+  image: string;
   rating: number;
   description: string;
-  sizes: string[];
-  colors: string[];
+  sizes: number[];
+  color: string;
   category: string;
-  slug: string;
-  sku?: string;
+  tags: string[];
 }
 
 export interface FilterState {
-  sizes: string[];
+  sizes: number[];
   colors: string[];
   priceRange: [number, number];
 }

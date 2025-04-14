@@ -17,15 +17,15 @@ type ProductCardProps =
       rating: number;
     };
 
-export function ProductCard(props: ProductCardProps) {
+export function FeaturedProductCard(props: ProductCardProps) {
   const [isLoading, setIsLoading] = useState(true)
   const { type } = props;
   
   // Extract properties based on prop type
   const name = type === 'full' ? props.product.name : props.name;
-  const brand = type === 'full' ? props.product.brand : props.brand;
+  const brand = type === 'full' ? props.product.category : props.brand; // Sử dụng category thay cho brand
   const price = type === 'full' ? props.product.price : props.price;
-  const imageUrl = type === 'full' ? props.product.imageUrl : props.imageUrl;
+  const imageUrl = type === 'full' ? props.product.image : props.imageUrl; // Sử dụng image thay cho imageUrl
   const rating = type === 'full' ? props.product.rating : props.rating;
   
   const handleImageLoad = () => {
