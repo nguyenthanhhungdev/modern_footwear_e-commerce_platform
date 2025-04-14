@@ -4,9 +4,15 @@ import { cn } from "@/lib/utils"
 import { DropdownContent } from "./dropdown-content"
 import React from "react"
 
+// Import MenuItemType interface from dropdown-content or define it here
+interface MenuItemType {
+  label: string;
+  path: string;
+}
+
 interface NavDropdownProps {
   label: string;
-  items: string[];
+  items: MenuItemType[];
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   menuType: string;

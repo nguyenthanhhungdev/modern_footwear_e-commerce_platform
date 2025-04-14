@@ -15,6 +15,12 @@ import { DropdownContent } from "./ui/dropdown-content"
 import { NavDropdown } from "./ui/nav-dropdown"
 import { SkeletonNavbar } from './SkeletonLoader'
 
+// Define MenuItemType here to match the one in dropdown-content
+interface MenuItemType {
+  label: string;
+  path: string;
+}
+
 export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
   const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,14 +33,14 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
   const triggerRef = useRef<HTMLLIElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<MutationObserver | null>(null)
-  
+
   // Clear timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [])
-  
+
   // Monitor and fix body style changes
   useLayoutEffect(() => {
     // Observer for body style changes
@@ -108,49 +114,62 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
       documentObserver.disconnect();
     };
   }, []);
-  
+
   if (isLoading) {
     return <SkeletonNavbar />
   }
 
-  const dropdownmencontent = [
-    "Sneakers",
-    "Running Shoes",
-    "Basketball Shoes",
-    "Casual Shoes",
-    "Sandals & Slides",
-    "Football"
-  ]
-  const dropdownsalecontent = [
-    "Sneakers",
-    "Running Shoes",
-    "Basketball Shoes",
-    "Casual Shoes",
-    "Sandals & Slides",
-    "Football"
-  ] 
-  const dropdownwomencontent = [
-    "Sneakers",
-    "Running Shoes",
-    "Basketball Shoes",
-    "Casual Shoes",
-    "Sandals & Slides",
-  ]
-  const dropdownkidcontent = [
-    "Sneakers",
-    "Casual Shoes",
-    "Sandals",
+  // Updated with MenuItemType format
+  const dropdownmencontent: MenuItemType[] = [
+    { label: "Sneakers", path: "/men/sneakers" },
+    { label: "Running Shoes", path: "/men/running-shoes" },
+    { label: "Basketball Shoes", path: "/men/basketball-shoes" },
+    { label: "Casual Shoes", path: "/men/casual-shoes" },
+    { label: "Sandals & Slides", path: "/men/sandals-slides" },
+    { label: "Football", path: "/men/football" }
   ]
 
+  // Updated with MenuItemType format
+  const dropdownsalecontent: MenuItemType[] = [
+    { label: "Sneakers", path: "/sale/sneakers" },
+    { label: "Running Shoes", path: "/sale/running-shoes" },
+    { label: "Basketball Shoes", path: "/sale/basketball-shoes" },
+    { label: "Casual Shoes", path: "/sale/casual-shoes" },
+    { label: "Sandals & Slides", path: "/sale/sandals-slides" },
+    { label: "Football", path: "/sale/football" }
+  ]
+
+  // Updated with MenuItemType format
+  const dropdownwomencontent: MenuItemType[] = [
+    { label: "Sneakers", path: "/women/sneakers" },
+    { label: "Running Shoes", path: "/women/running-shoes" },
+    { label: "Basketball Shoes", path: "/women/basketball-shoes" },
+    { label: "Casual Shoes", path: "/women/casual-shoes" },
+    { label: "Sandals & Slides", path: "/women/sandals-slides" },
+  ]
+
+  // Updated with MenuItemType format
+  const dropdownkidcontent: MenuItemType[] = [
+    { label: "Sneakers", path: "/kids/sneakers" },
+    { label: "Casual Shoes", path: "/kids/casual-shoes" },
+    { label: "Sandals", path: "/kids/sandals" },
+  ]
+
+  // User profile dropdown items
+  const profileDropdownItems: MenuItemType[] = [
+    { label: "Profile", path: "/profile" },
+    { label: "Settings", path: "/settings" },
+    { label: "Logout", path: "/logout" }
+  ]
 
   // Handle hover with delay
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleMouseEnter = (menuType: string) => (_event: React.MouseEvent<HTMLLIElement>) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     setIsHovered(true)
-    
+
     // Close other menus
-    switch(menuType) {
+    switch (menuType) {
       case 'men':
         setIsWomenMenuOpen(false);
         setIsKidsMenuOpen(false);
@@ -177,14 +196,14 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
         break;
     }
   }
-  
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleMouseLeave = (menuType: string) => (_event: React.MouseEvent<HTMLLIElement>) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
       if (!contentRef.current?.matches(':hover') && !triggerRef.current?.matches(':hover')) {
         setIsHovered(false)
-        switch(menuType) {
+        switch (menuType) {
           case 'men': setIsMenMenuOpen(false); break
           case 'women': setIsWomenMenuOpen(false); break
           case 'kids': setIsKidsMenuOpen(false); break
@@ -216,29 +235,16 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                className="min-w-[200px] bg-white rounded-md p-1 shadow-lg will-change-[opacity,transform]"
+              <DropdownContent
+                items={[
+                  { label: "New Releases", path: "/new-releases" },
+                  { label: "Men", path: "/men" },
+                  { label: "Women", path: "/women" },
+                  { label: "Kids", path: "/kids" },
+                  { label: "Sale", path: "/sale" }
+                ]}
                 sideOffset={5}
-                onPointerDownOutside={(e) => e.preventDefault()}
-                onInteractOutside={(e) => e.preventDefault()}
-              >
-                <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                  <a href="#" className="w-full">New Releases</a>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                  <a href="#" className="w-full">Men</a>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                  <a href="#" className="w-full">Women</a>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                  <a href="#" className="w-full">Kids</a>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="p-2 hover:bg-gray-100 rounded text-sm outline-none cursor-pointer">
-                  <a href="#" className="w-full">Sale</a>
-                </DropdownMenu.Item>
-                <DropdownMenu.Arrow className="fill-white" />
-              </DropdownMenu.Content>
+              />
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
           {/* ============= */}
@@ -314,7 +320,7 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
           <Button variant="ghost" size="sm" onClick={() => navigate('/cart')}>
             <ShoppingBag className="h-5 w-5" />
           </Button>
-          
+
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <button type="button" className="rounded-full outline-none">
@@ -324,7 +330,7 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
                     src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
                     alt="User Avatar"
                   />
-                  <Avatar.Fallback 
+                  <Avatar.Fallback
                     className="flex h-full w-full items-center justify-center bg-white text-sm font-medium text-violet11"
                     delayMs={600}
                   >
@@ -333,10 +339,10 @@ export function Navbar({ isLoading = false }: { isLoading?: boolean }) {
                 </Avatar.Root>
               </button>
             </DropdownMenu.Trigger>
-            
+
             <DropdownMenu.Portal>
               <DropdownContent
-                items={["Profile", "Settings", "Logout"]}
+                items={profileDropdownItems}
                 sideOffset={5}
               />
             </DropdownMenu.Portal>
