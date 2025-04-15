@@ -3,7 +3,7 @@ import { Filters } from "./Filters";
 import { useState } from "react";
 import { SelectComponent } from "../ui/select";
 import * as Select  from "@radix-ui/react-select";
-import ProductGrid from "./ProductGrid";
+import ProductGridLayout from "./ProductGridLayout";
 // Hàm lọc và sắp xếp sản phẩm
 interface FilterType {
     categories: string[]
@@ -61,7 +61,7 @@ interface SneakerProps {
     products: Product[];
 }
 
-export default function Sneaker({ products }: SneakerProps) {
+export default function ProductGrid({ products }: SneakerProps) {
     const [sortOption, setSortOption] = useState('newest');
     const [filters, setFilters] = useState<FilterType>({
         categories: [],
@@ -98,7 +98,7 @@ export default function Sneaker({ products }: SneakerProps) {
                             <Select.Item value="priceDesc">Giá: Cao đến thấp</Select.Item>
                         </SelectComponent>
                     </div>
-                    <ProductGrid products={applyFiltersAndSorting(products, filters, sortOption)} />
+                    <ProductGridLayout products={applyFiltersAndSorting(products, filters, sortOption)} />
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ interface ProductGridProps {
   isLoading?: boolean
 }
 
-export default function ProductGrid({ products, isLoading = false }: ProductGridProps) {
+export default function ProductGridLayout({ products, isLoading = false }: ProductGridProps) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {

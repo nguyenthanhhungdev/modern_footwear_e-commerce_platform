@@ -1,4 +1,4 @@
-import Sneaker from '@/components/sneaker/Sneaker';
+import ProductGrid from '@/components/productGrid/ProductGrid';
 
 /* 
 
@@ -67,9 +67,9 @@ const products = [
 
 
  
-export default function SneakerPage() {
+export default function ProductGridPage() {
   
   return (
-    <Sneaker products={products} />
+    <ProductGrid products={products} />
   );
 }
