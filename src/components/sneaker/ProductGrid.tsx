@@ -1,8 +1,8 @@
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { Virtuoso } from 'react-virtuoso'
-import { Product } from '../types/product'
-import { ProductCard } from './ProductCard'
-import { SkeletonProductGrid } from './SkeletonLoader'
+import { Product } from '@/types/product'
+import { ProductCard } from '../ProductCard'
+import { SkeletonProductGrid } from '../SkeletonLoader'
 import { useEffect, useState } from 'react'
 
 interface ProductGridProps {
