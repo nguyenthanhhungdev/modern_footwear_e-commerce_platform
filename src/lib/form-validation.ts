@@ -48,5 +48,13 @@ export const paymentSchema = z.object({
   cvv: z.string().min(3, { message: 'CVV không hợp lệ' }).optional(),
 });
 
+export const discountSchema = z.object({
+  discountCode: z
+    .string()
+    .min(1, { message: 'Vui lòng nhập mã giảm giá' })
+    .max(50, { message: 'Mã giảm giá quá dài' }),
+});
+
 export type ShippingFormValues = z.infer<typeof shippingSchema>;
 export type PaymentFormValues = z.infer<typeof paymentSchema>;
+export type DiscountFormValues = z.infer<typeof discountSchema>;

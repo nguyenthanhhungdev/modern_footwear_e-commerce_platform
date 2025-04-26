@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DiscountCode } from '@/types/checkout';
+import { discountSchema, DiscountFormValues } from '@/lib/form-validation';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 
 interface DiscountFormProps {
   onApplyDiscount: (discountCode: string) => void;
@@ -10,25 +20,20 @@ interface DiscountFormProps {
 }
 
 export const DiscountForm = ({ onApplyDiscount, appliedDiscount, isLoading = false }: DiscountFormProps) => {
-  const [code, setCode] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!code.trim()) {
-      setError('Vui lòng nhập mã giảm giá');
-      return;
+  const form = useForm<DiscountFormValues>({
+    resolver: zodResolver(discountSchema),
+    defaultValues: {
+      discountCode: ''
     }
-    
-    setError(null);
-    onApplyDiscount(code);
+  });
+
+  const onSubmit = (data: DiscountFormValues) => {
+    onApplyDiscount(data.discountCode);
   };
 
   const handleRemoveDiscount = () => {
-    // Gửi mã trống để xóa mã giảm giá
     onApplyDiscount('');
-    setCode('');
+    form.reset();
   };
 
   return (
@@ -58,25 +63,36 @@ export const DiscountForm = ({ onApplyDiscount, appliedDiscount, isLoading = fal
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <div className="flex-1">
-            <Input
-              placeholder="Nhập mã giảm giá"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              disabled={isLoading}
-              className="h-9"
-            />
-            {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
-          </div>
-          <Button 
-            type="submit" 
-            disabled={isLoading} 
-            className="whitespace-nowrap h-9"
-          >
-            {isLoading ? 'Đang xử lý...' : 'Áp dụng'}
-          </Button>
-        </form>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name="discountCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Nhập mã giảm giá"
+                        disabled={isLoading}
+                        className="h-9"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs mt-1" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button 
+              type="submit" 
+              disabled={isLoading} 
+              className="whitespace-nowrap h-9"
+            >
+              {isLoading ? 'Đang xử lý...' : 'Áp dụng'}
+            </Button>
+          </form>
+        </Form>
       )}
     </div>
   );
