@@ -1,18 +1,47 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { TextArea as RadixTextArea } from "@radix-ui/themes"
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+// Define the allowed color options for Radix TextArea
+type RadixColor = 
+  | "tomato" | "red" | "crimson" | "pink" | "plum" | "purple" 
+  | "violet" | "indigo" | "blue" | "cyan" | "teal" | "green" 
+  | "grass" | "orange" | "brown" | "sky" | "mint" | "lime" 
+  | "yellow" | "amber" | "gold" | "bronze" | "gray"
 
+export interface TextareaProps extends Omit<React.ComponentPropsWithoutRef<typeof RadixTextArea>, 'size'> {
+  // Keep existing TextareaProps properties and extend with Radix-specific props
+  radius?: "none" | "small" | "medium" | "large" | "full"
+  variant?: "surface" | "classic" | "soft"
+  color?: RadixColor
+  size?: "1" | "2" | "3"
+  resize?: "none" | "vertical" | "horizontal" | "both"
+}
+
+/**
+ * A customizable textarea component that wraps RadixTextArea.
+ * 
+ * @component
+ * @param {object} props - The component props
+ * @param {string} [props.className] - Additional CSS class names
+ * @param {string} [props.variant="surface"] - The visual variant of the textarea
+ * @param {string} [props.radius] - Border radius of the textarea
+ * @param {string} [props.color] - Color theme of the textarea
+ * @param {string} [props.size="2"] - Size of the textarea
+ * @param {string} [props.resize="vertical"] - Resize behavior of the textarea
+ * @param {React.TextareaHTMLAttributes<HTMLTextAreaElement>} props.other - Additional textarea attributes
+ * 
+ * @returns {React.ReactElement} A textarea component with the specified props
+ */
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, variant = "surface", radius, color, size = "2", resize = "vertical", ...props }) => {
     return (
-      <textarea
-        className={cn(
-          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        ref={ref}
+      <RadixTextArea
+        className={className}
+        variant={variant}
+        radius={radius}
+        color={color}
+        size={size}
+        resize={resize}
         {...props}
       />
     )

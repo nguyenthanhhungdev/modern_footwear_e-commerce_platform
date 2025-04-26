@@ -52,6 +52,36 @@ const sizeMap: Record<string, "1" | "2" | "3"> = {
   lg: "3",
 }
 
+/**
+ * A customizable Button component with various variants and sizes.
+ * 
+ * This component merges the flexibility of custom styling with Radix UI's Button component.
+ * It supports both traditional button rendering and the "asChild" pattern for composability.
+ * 
+ * @component
+ * @param {object} props - The properties for the Button component
+ * @param {string} [props.className] - Additional CSS class names to apply
+ * @param {string} [props.variant="default"] - Visual style variant of the button
+ * @param {string} [props.size="default"] - Size of the button
+ * @param {boolean} [props.asChild=false] - When true, renders as a Slot component to enable passing 
+ *                                          the button's functionality to a child component
+ * @param {React.ReactNode} props.children - The content to be rendered inside the button
+ * @param {React.Ref<HTMLButtonElement>} ref - Ref forwarded to the underlying button element
+ * 
+ * @example
+ * // Default button
+ * <Button>Click me</Button>
+ * 
+ * @example
+ * // Custom variant and size
+ * <Button variant="destructive" size="sm">Delete</Button>
+ * 
+ * @example
+ * // Using asChild with another component
+ * <Button asChild>
+ *   <Link href="/dashboard">Go to Dashboard</Link>
+ * </Button>
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", asChild = false, children, ...props }, ref) => {
     // Nếu yêu cầu asChild, sử dụng Button cũ cho tương thích
