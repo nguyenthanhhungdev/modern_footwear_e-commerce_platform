@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Cross2Icon, PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Button } from './ui/button'
+import { useNavigate } from 'react-router-dom'
 
 type CartItem = {
   id: string
@@ -13,6 +14,7 @@ type CartItem = {
 }
 
 export function Cart() {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = React.useState<CartItem[]>([
     {
       id: '1',
@@ -54,10 +56,11 @@ export function Cart() {
 
   const handleCheckout = async () => {
     setIsLoading(true)
-    // Simulate API call
+    // Simulate API call - Trong thực tế, bạn có thể lưu state giỏ hàng vào context hoặc redux
     await new Promise(resolve => setTimeout(resolve, 1000))
     setIsLoading(false)
-    alert('Checkout completed!')
+    // Sử dụng React Router để điều hướng đến trang checkout
+    navigate('/checkout')
   }
 
   return (
@@ -94,7 +97,6 @@ export function Cart() {
                   <div className="flex items-center border rounded-md">
                     <Button
                       variant="ghost"
-                      size="icon"
                       className="h-8 w-8"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                     >
@@ -103,7 +105,6 @@ export function Cart() {
                     <span className="w-8 text-center">{item.quantity}</span>
                     <Button
                       variant="ghost"
-                      size="icon"
                       className="h-8 w-8"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
@@ -113,7 +114,7 @@ export function Cart() {
                   
                   <Dialog.Root>
                     <Dialog.Trigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button variant="ghost" className="h-8 w-8">
                         <Cross2Icon className="h-4 w-4" />
                       </Button>
                     </Dialog.Trigger>

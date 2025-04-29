@@ -1,12 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './app/home/page';
-import CartPage from './app/cart/page';
-import ProductDetailPage from '@/app/productDetail/page';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import ProductGridPage from './app/productGrid/page';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
+import AppRoutes from './routes';
 
 function App() {
   return (
@@ -14,12 +11,7 @@ function App() {
       <Router>
         <div className="min-h-screen bg-background">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/men/sneakers" element={<ProductGridPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} />
-        </Routes>
+          <AppRoutes />
           <Footer />
         </div>
       </Router>
