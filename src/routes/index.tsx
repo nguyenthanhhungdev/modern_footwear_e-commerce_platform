@@ -6,6 +6,7 @@ import ProductGridRoutes from './ProductGridRoutes';
 import ProductDetailRoutes from './ProductDetailRoutes';
 import CheckoutRoutes from './CheckoutRoutes';
 import ProductDetailPage from '@/app/productDetail/page';
+import NotFoundPage from '@/app/notFound/page';
 
 /**
  * Router chính của ứng dụng
@@ -15,7 +16,7 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Router trang chủ */}
-      <Route path="/*" element={<HomeRoutes />} />
+      <Route path="/" element={<HomeRoutes />} />
       
       {/* Router giỏ hàng */}
       <Route path="/cart/*" element={<CartRoutes />} />
@@ -29,6 +30,9 @@ export const AppRoutes: React.FC = () => {
       
       {/* Router thanh toán */}
       <Route path="/checkout/*" element={<CheckoutRoutes />} />
+      
+      {/* Trang 404 - Catch-all route cho các đường dẫn không hợp lệ */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

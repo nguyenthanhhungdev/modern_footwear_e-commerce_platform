@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ProductGridPage from '@/app/productGrid/page';
 
 /**
@@ -21,9 +21,6 @@ export const ProductGridRoutes: React.FC = () => {
       <Route path="sale" element={<SalePage />} />
       <Route path="best-sellers" element={<BestSellersPage />} />
       */}
-      
-      {/* Chuyển hướng cho đường dẫn không hợp lệ */}
-      <Route path="*" element={<Navigate to="/men/sneakers" replace />} />
     </Routes>
   );
 };

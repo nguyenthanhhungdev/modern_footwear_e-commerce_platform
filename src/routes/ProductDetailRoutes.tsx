@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
 
 /**
  * Router cho trang chi tiết sản phẩm
@@ -8,9 +8,6 @@ import { Routes, Route, Navigate, useParams } from 'react-router-dom';
  * Lưu ý: ProductDetailPage đã được xử lý bởi router chính ở /product/:id
  */
 export const ProductDetailRoutes: React.FC = () => {
-  // Lấy ID sản phẩm từ URL
-  const { id } = useParams<{ id: string }>();
-  
   return (
     <Routes>
       {/* Các trang con cho chi tiết sản phẩm */}
@@ -26,9 +23,6 @@ export const ProductDetailRoutes: React.FC = () => {
       <Route path="gallery" element={<ProductGalleryPage />} />
       <Route path="video" element={<ProductVideoPage />} />
       */}
-      
-      {/* Chuyển hướng cho đường dẫn không hợp lệ */}
-      <Route path="*" element={<Navigate to={`/product/${id}`} replace />} />
     </Routes>
   );
 };

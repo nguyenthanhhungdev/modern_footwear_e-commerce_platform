@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import CheckoutPage from '@/app/checkout/page';
 
 /**
@@ -18,9 +18,6 @@ export const CheckoutRoutes: React.FC = () => {
       <Route path="confirmation" element={<CheckoutConfirmationPage />} />
       <Route path="success" element={<OrderSuccessPage />} /> 
       */}
-      
-      {/* Chuyển hướng cho đường dẫn không hợp lệ */}
-      <Route path="*" element={<Navigate to="/checkout" replace />} />
     </Routes>
   );
 };

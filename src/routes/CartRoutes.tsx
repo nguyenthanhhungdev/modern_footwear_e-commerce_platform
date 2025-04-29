@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import CartPage from '@/app/cart/page';
 
 /**
@@ -18,9 +18,6 @@ export const CartRoutes: React.FC = () => {
       <Route path="recommendations" element={<RecommendationsPage />} />
       <Route path="history" element={<PurchaseHistoryPage />} />
       */}
-      
-      {/* Chuyển hướng cho đường dẫn không hợp lệ */}
-      <Route path="*" element={<Navigate to="/cart" replace />} />
     </Routes>
   );
 };

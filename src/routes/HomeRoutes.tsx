@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from '@/app/home/page';
 
 /**
@@ -20,9 +20,6 @@ export const HomeRoutes: React.FC = () => {
       <Route path="blog" element={<BlogPage />} />
       <Route path="blog/:id" element={<BlogPostDetail />} />
       */}
-      
-      {/* Chuyển hướng cho đường dẫn không hợp lệ */}
-      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
