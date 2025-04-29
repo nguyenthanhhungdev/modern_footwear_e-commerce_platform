@@ -14,19 +14,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 const mockCartItems: CartItem[] = [
   {
     id: '1',
-    name: 'Giày Thể Thao Nike Air Max',
-    price: 2500000,
+    name: 'Air Jordan 1 Retro High OG',
+    price: 180 * 23000, // Chuyển đổi từ USD sang VND (giả định tỷ giá)
     quantity: 1,
-    image: '/images/products/nike-air-max.jpg',
-    size: '42',
+    image: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+    size: '10',
   },
   {
     id: '2',
-    name: 'Giày Chạy Bộ Adidas Ultraboost',
-    price: 3200000,
+    name: 'Yeezy Boost 350 V2',
+    price: 220 * 23000, // Chuyển đổi từ USD sang VND (giả định tỷ giá)
     quantity: 1,
-    image: '/images/products/adidas-ultraboost.jpg',
-    size: '41',
+    image: 'https://images.unsplash.com/photo-1543508282-6319a3e2621f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=715&q=80',
+    size: '9',
   },
 ];
 
