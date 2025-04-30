@@ -122,7 +122,7 @@ export default function CheckoutPage() {
 
     // Thông thường sẽ gửi request lên server để kiểm tra mã giảm giá
     // Trong ví dụ này, chúng ta giả lập một vài mã giảm giá có sẵn
-    const validDiscounts: Record<string, DiscountCode> = {
+    const validDiscountsMock: Record<string, DiscountCode> = {
       'WELCOME10': { code: 'WELCOME10', discountAmount: 10, discountType: 'percentage', isValid: true },
       'FREESHIP': { code: 'FREESHIP', discountAmount: 30000, discountType: 'fixed', isValid: true },
       'SUMMER25': { code: 'SUMMER25', discountAmount: 25, discountType: 'percentage', isValid: true },
@@ -130,10 +130,10 @@ export default function CheckoutPage() {
 
     // Kiểm tra xem mã giảm giá có hợp lệ không
     const upperCaseCode = code.toUpperCase();
-    if (upperCaseCode in validDiscounts) {
+    if (upperCaseCode in validDiscountsMock) {
       setCheckoutState((prev) => ({
         ...prev,
-        discountCode: validDiscounts[upperCaseCode]
+        discountCode: validDiscountsMock[upperCaseCode]
       }));
     } else {
       // Nếu mã không hợp lệ
