@@ -48,7 +48,7 @@ export default function CheckoutPage() {
     },
     paymentMethod: null,
     currentStep: 'shipping',
-    discountCode: null,
+    discountCodes: [],
   });
   
   // Tính các giá trị cơ bản cho đơn hàng
@@ -57,12 +57,16 @@ export default function CheckoutPage() {
   
   // Tính giảm giá và tổng tiền cuối cùng - sử dụng useMemo để tránh tính toán lại khi không cần thiết
   const { orderSummary } = useMemo(() => {
-    // Tính số tiền được giảm giá
-    const discountAmount = checkoutState.discountCode && checkoutState.discountCode.isValid 
-      ? (checkoutState.discountCode.discountType === 'percentage' 
-          ? Math.round((subtotal * checkoutState.discountCode.discountAmount) / 100)
-          : checkoutState.discountCode.discountAmount)
-      : 0;
+    // Tính tổng số tiền được giảm giá từ tất cả các mã giảm giá
+    const discountAmount = checkoutState.discountCodes
+      .filter(code => code.isValid)
+      .reduce((total, discount) => {
+        if (discount.discountType === 'percentage') {
+          return total + Math.round((subtotal * discount.discountAmount) / 100);
+        } else {
+          return total + discount.discountAmount;
+        }
+      }, 0);
     
     // Tính tổng tiền sau khi áp dụng giảm giá
     const finalTotal = subtotal + shipping + tax - discountAmount;
@@ -84,7 +88,7 @@ export default function CheckoutPage() {
     };
     
     return { orderSummary: summary };
-  }, [cartItems, subtotal, shipping, tax, checkoutState.discountCode]);
+  }, [cartItems, subtotal, shipping, tax, checkoutState.discountCodes]);
 
   // Kiểm tra nếu giỏ hàng trống, chuyển về trang giỏ hàng
   useEffect(() => {
@@ -111,11 +115,17 @@ export default function CheckoutPage() {
 
   // Hàm xử lý áp dụng mã giảm giá
   const handleApplyDiscount = (code: string) => {
-    // Nếu code là chuỗi trống, xóa mã giảm giá
+    // Nếu code là chuỗi trống, không làm gì cả
     if (!code.trim()) {
+      return;
+    }
+
+    // Kiểm tra nếu là lệnh xóa mã giảm giá
+    if (code.startsWith('REMOVE:')) {
+      const discountToRemove = code.substring(7);
       setCheckoutState((prev) => ({
         ...prev,
-        discountCode: null
+        discountCodes: prev.discountCodes.filter(dc => dc.code !== discountToRemove)
       }));
       return;
     }
@@ -126,26 +136,29 @@ export default function CheckoutPage() {
       'WELCOME10': { code: 'WELCOME10', discountAmount: 10, discountType: 'percentage', isValid: true },
       'FREESHIP': { code: 'FREESHIP', discountAmount: 30000, discountType: 'fixed', isValid: true },
       'SUMMER25': { code: 'SUMMER25', discountAmount: 25, discountType: 'percentage', isValid: true },
+      'FLASH5': { code: 'FLASH5', discountAmount: 5, discountType: 'percentage', isValid: true },
+      'BIRTHDAY': { code: 'BIRTHDAY', discountAmount: 50000, discountType: 'fixed', isValid: true },
     };
 
     // Kiểm tra xem mã giảm giá có hợp lệ không
     const upperCaseCode = code.toUpperCase();
+    
+    // Kiểm tra xem mã giảm giá đã được áp dụng chưa
+    const isAlreadyApplied = checkoutState.discountCodes.some(dc => dc.code === upperCaseCode);
+    if (isAlreadyApplied) {
+      // Thông báo mã đã được sử dụng
+      alert('Mã giảm giá này đã được áp dụng!');
+      return;
+    }
+    
     if (upperCaseCode in validDiscountsMock) {
       setCheckoutState((prev) => ({
         ...prev,
-        discountCode: validDiscountsMock[upperCaseCode]
+        discountCodes: [...prev.discountCodes, validDiscountsMock[upperCaseCode]]
       }));
     } else {
       // Nếu mã không hợp lệ
-      setCheckoutState((prev) => ({
-        ...prev,
-        discountCode: { 
-          code: code, 
-          discountAmount: 0, 
-          discountType: 'fixed' as const, 
-          isValid: false 
-        }
-      }));
+      alert('Mã giảm giá không hợp lệ!');
     }
   };
 

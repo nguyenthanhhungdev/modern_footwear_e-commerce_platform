@@ -6,14 +6,14 @@ import { DiscountForm } from './DiscountForm';
 interface CheckoutSummaryProps {
   items: CartItem[];
   subtotal: number;
-  discountCode?: DiscountCode | null;
+  discountCodes?: DiscountCode[];
   onApplyDiscount?: (code: string) => void;
 }
 
 export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ 
   items, 
   subtotal, 
-  discountCode = null,
+  discountCodes = [],
   onApplyDiscount = () => {}
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -22,15 +22,19 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
   const shipping = 30000; // Phí vận chuyển cố định, có thể thay đổi theo logic của bạn
   const tax = Math.round(subtotal * 0.1); // VAT 10%
   
-  // Tính số tiền được giảm giá
-  const discount = discountCode && discountCode.isValid 
-    ? (discountCode.discountType === 'percentage' 
-        ? Math.round((subtotal * discountCode.discountAmount) / 100)
-        : discountCode.discountAmount)
-    : 0;
+  // Tính tổng số tiền được giảm giá từ tất cả mã giảm giá
+  const totalDiscount = discountCodes
+    .filter(code => code.isValid)
+    .reduce((total, code) => {
+      if (code.discountType === 'percentage') {
+        return total + Math.round((subtotal * code.discountAmount) / 100);
+      } else {
+        return total + code.discountAmount;
+      }
+    }, 0);
   
   // Tính tổng tiền sau khi trừ giảm giá
-  const total = subtotal + shipping + tax - discount;
+  const total = subtotal + shipping + tax - totalDiscount;
   
   // Hàm xử lý áp dụng mã giảm giá
   const handleApplyDiscount = (code: string) => {
@@ -74,7 +78,7 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
         {/* Form nhập mã giảm giá */}
         <DiscountForm 
           onApplyDiscount={handleApplyDiscount} 
-          appliedDiscount={discountCode} 
+          appliedDiscounts={discountCodes} 
           isLoading={isProcessing} 
         />
 
@@ -93,10 +97,10 @@ export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
           </div>
           
           {/* Hiển thị giảm giá nếu có */}
-          {discount > 0 && (
+          {totalDiscount > 0 && (
             <div className="flex justify-between text-green-600">
               <span>Giảm giá</span>
-              <span>-{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(discount)}</span>
+              <span>-{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalDiscount)}</span>
             </div>
           )}
           

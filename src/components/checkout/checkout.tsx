@@ -141,7 +141,7 @@ export const CheckoutComponent: React.FC<CheckoutComponentProps> = ({
           <CheckoutSummary 
             items={cartItems} 
             subtotal={subtotal} 
-            discountCode={checkoutState.discountCode} 
+            discountCodes={checkoutState.discountCodes} 
             onApplyDiscount={onApplyDiscount} 
           />
         </div>

@@ -26,7 +26,7 @@ export interface CheckoutState {
   shippingInfo: ShippingInfo;
   paymentMethod: PaymentMethod | null;
   currentStep: 'shipping' | 'payment' | 'confirmation';
-  discountCode: DiscountCode | null;
+  discountCodes: DiscountCode[];
 }
 
 // Thông tin đơn hàng đầy đủ
