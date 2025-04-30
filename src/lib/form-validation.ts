@@ -28,25 +28,35 @@ export const shippingSchema = z.object({
   notes: z.string().optional(),
 });
 
-export const paymentSchema = z.object({
-  paymentMethod: z
-    .enum(['stripe', 'cash_on_delivery'], { 
-      required_error: 'Vui lòng chọn phương thức thanh toán'
-    }),
-  // Chỉ yêu cầu xác thực thông tin thẻ khi phương thức là credit_card
+// Định nghĩa các schema riêng cho từng phương thức thanh toán
+const basePaymentSchema = {
+  paymentMethod: z.enum(['stripe', 'cash_on_delivery'], { 
+    required_error: 'Vui lòng chọn phương thức thanh toán'
+  }),
+};
+
+const stripePaymentSchema = z.object({
+  ...basePaymentSchema,
+  paymentMethod: z.literal('stripe'),
   cardNumber: z
     .string()
     .min(16, { message: 'Số thẻ không hợp lệ' })
-    .max(19, { message: 'Số thẻ không hợp lệ' })
-    .optional()
-    .refine((val) => val !== undefined && val.length >= 16, {
-      message: "Số thẻ không hợp lệ",
-      path: ["cardNumber"]
-    }),
-  cardName: z.string().min(2, { message: 'Tên trên thẻ không hợp lệ' }).optional(),
-  expDate: z.string().min(4, { message: 'Ngày hết hạn không hợp lệ' }).optional(),
-  cvv: z.string().min(3, { message: 'CVV không hợp lệ' }).optional(),
+    .max(19, { message: 'Số thẻ không hợp lệ' }),
+  cardName: z.string().min(2, { message: 'Tên trên thẻ không hợp lệ' }),
+  expDate: z.string().min(4, { message: 'Ngày hết hạn không hợp lệ' }),
+  cvv: z.string().min(3, { message: 'CVV không hợp lệ' }),
 });
+
+const codPaymentSchema = z.object({
+  ...basePaymentSchema,
+  paymentMethod: z.literal('cash_on_delivery'),
+});
+
+// Kết hợp các schema dựa trên discriminator là paymentMethod
+export const paymentSchema = z.discriminatedUnion('paymentMethod', [
+  stripePaymentSchema,
+  codPaymentSchema,
+]);
 
 export const discountSchema = z.object({
   discountCode: z
